@@ -82,7 +82,7 @@ authRoutes.post('/login', async (req, res)=>{
 
         const token = buatToken(user.id, user.role);
 
-        res.cookie("token", token, {httpOnly:true, sameSite:"strict", maxAge:1000*60*60})//satuan milisecond
+        res.cookie("token", token, {httpOnly:true, sameSite:"strict", maxAge:1000*60})//satuan milisecond
         res.json({redirectUrl: user.role == "ADMIN"? "/admin"  : "/user", message:"Login succeed"})
     } catch (error) {
         console.error(error);
