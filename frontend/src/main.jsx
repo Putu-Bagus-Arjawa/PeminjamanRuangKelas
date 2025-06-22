@@ -5,11 +5,13 @@ import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Register from './pages/Register.jsx'
 import Login from './pages/Login.jsx'
+import ListRuangan from './pages/ListRuangan.jsx'
 import App from './App.jsx'
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
   {path: '/login', element: <Login/>},
+  {path: '/listruangan', element: <ListRuangan/>},
   {path: '*', element: <App/>},
 ])
 
