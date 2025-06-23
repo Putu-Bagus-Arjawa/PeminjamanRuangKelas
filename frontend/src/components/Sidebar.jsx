@@ -55,7 +55,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
   };
 
   return (
-    <div className="w-64 bg-white shadow-sm border-r border-gray-200">
+    <div className="w-64 h-[200vh] bg-white shadow-sm border-r border-gray-200">
       <div className="p-6">
         <h1 className="text-xl font-bold text-gray-800">SMART CLASS</h1>
       </div>
