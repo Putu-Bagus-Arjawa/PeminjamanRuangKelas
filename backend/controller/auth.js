@@ -2,8 +2,8 @@ import {Router} from "express";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv"
 import bcrypt from "bcrypt"
-
 import jewete from "jsonwebtoken"
+import { authenticate } from "./Middleware.js";
 
 dotenv.config()
 
@@ -83,7 +83,7 @@ authRoutes.post('/login', async (req, res)=>{
         const token = buatToken(user.id, user.role);
 
         res.cookie("token", token, {httpOnly:true, sameSite:"strict", maxAge:1000*20})//satuan milisecond
-        res.json({redirectUrl: user.role == "ADMIN"? "/admin"  : "/user", message:"Login succeed"})
+        res.json({redirectUrl: user.role == "ADMIN"? "/listruangan"  : "/dashboard", message:"Login succeed"})
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
@@ -97,5 +97,12 @@ authRoutes.delete("/logout", (req, res)=>{
     res.clearCookie()
     res.json({message: "Anda berhasil logout"})
 })
+
+authRoutes.get("/verify", authenticate, (req, res) => {
+  res.json({ authenticated: true, user: req.user });
+});
+
+
+
 
 export default authRoutes

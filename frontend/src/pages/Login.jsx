@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../Context/AuthContext';
 
 export default function SmartClassLogin() {
 const navigate = useNavigate()
+const {verify} = useAuth()
  const [form, setForm] = useState({
           email: "",
           password: "",
@@ -25,6 +27,7 @@ const navigate = useNavigate()
       console.log(respons)
       
       if(respons.ok){
+        await verify()
           setTimeout(() => {
             navigate(hasil.redirectUrl)
           }, 1000);
