@@ -80,10 +80,10 @@ authRoutes.post('/login', async (req, res)=>{
             return res.status(401).json({message: "Username or Password invalid"})
         }
 
-        const token = buatToken(user.id, user.role);
+        const token = buatToken(user.id, user.role, user.email, user.name);
 
         res.cookie("token", token, {httpOnly:true, sameSite:"strict", maxAge:1000*20})//satuan milisecond
-        res.json({redirectUrl: user.role == "ADMIN"? "/listruangan"  : "/dashboard", message:"Login succeed"})
+        res.json({redirectUrl: user.role == "ADMIN"? "/dashboard"  : "/dashboard", message:"Login succeed"})
     } catch (error) {
         console.error(error);
         res.status(500).json({ 

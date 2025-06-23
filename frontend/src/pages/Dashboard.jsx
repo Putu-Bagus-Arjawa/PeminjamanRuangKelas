@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const [formData, setFormData] = useState({
@@ -124,6 +125,27 @@ const Dashboard = () => {
     }
   };
 
+   const [form, setForm ] = useState({
+          name: "name",
+          email: "",
+          role: "",
+   })
+  const loadData = async ()=>{
+    try {
+        const respons = await fetch('http://localhost:5000/user', {credentials:"include"});
+        const hasil = await respons.json()
+        console.log(hasil)
+        if(respons.ok){
+            setForm(hasil)
+        }
+    } catch (error) {
+           console.error(error)
+    }
+  }
+
+
+  useEffect(()=>{loadData()},[])
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex min-h-screen">
@@ -146,7 +168,7 @@ const Dashboard = () => {
                 className="px-4 py-2 border rounded-lg"
               />
               <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold">
-                B
+                {form.name.charAt(0)}
               </div>
             </div>
           </div>
