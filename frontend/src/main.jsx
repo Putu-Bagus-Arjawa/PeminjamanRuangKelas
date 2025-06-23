@@ -7,11 +7,13 @@ import Register from './pages/Register.jsx'
 import Login from './pages/Login.jsx'
 import ListRuangan from './pages/ListRuangan.jsx'
 import App from './App.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
   {path: '/login', element: <Login/>},
   {path: '/listruangan', element: <ListRuangan/>},
+  {path: '/dashboard', element: <Dashboard/>},
   {path: '*', element: <App/>},
 ])
 
