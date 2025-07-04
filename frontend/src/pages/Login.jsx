@@ -107,7 +107,7 @@ const {verify} = useAuth()
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full bg-teal-400 hover:bg-teal-500 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 transform hover:scale-105 active:scale-95"
+          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 transform hover:scale-105 active:scale-95"
         >
           SIGN IN
         </button>
