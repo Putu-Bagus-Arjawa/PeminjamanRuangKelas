@@ -43,11 +43,11 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
 
   const accountPages = [
     { name: 'Profile', icon: UserIcon, active: false },
-    { name: 'Sign In', icon: LogInIcon, active: false }
+    { name: 'Log Out', icon: LogInIcon, active: false }
   ];
 
   const handleAccountPageClick = (pageName) => {
-    if (pageName === 'Sign In') {
+    if (pageName === 'Log Out') {
       navigate('/login');
     }
     // Add other navigation logic here if needed for Profile page
