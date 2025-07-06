@@ -1,24 +1,8 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
 
 // Simple SVG icon components for header
-const SearchIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-);
-
-const BellIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM12 15l-3-3h6l-3 3zM8 7a4 4 0 118 0v4.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 01-.293-.707V7z" />
-  </svg>
-);
-
-const UserIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-  </svg>
-);
 
 export default function RoomListingUI() {
   const [activeMenu, setActiveMenu] = useState('List Ruangan');
@@ -113,27 +97,18 @@ export default function RoomListingUI() {
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 p-8">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-sm text-gray-500">
-              <span>Pages</span>
-              <span>/</span>
-              <span className="text-gray-900 font-medium">List Ruangan</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <SearchIcon />
-              <BellIcon />
-              <div className="w-8 h-8 text-gray-400">
-                <UserIcon />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Header 
+          breadcrumbPath="Pages / List Ruangan"
+          userName="A"
+          showSearchBar={true}
+          searchPlaceholder="Type here"
+          onSearchChange={(e) => console.log(e.target.value)}
+        />
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-1">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Peminjaman Ruangan</h2>
           
           {/* Room Grid - 4 cards per row */}

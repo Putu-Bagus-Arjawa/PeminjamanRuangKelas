@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import Header from '../components/Header';
 
 const Dashboard = () => {
     const [activeMenu, setActiveMenu] = useState('Riwayat Booking');
@@ -83,15 +84,15 @@ const Dashboard = () => {
       {/* Sidebar Component */}
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
 
-      <div className="flex-1 p-6 bg-gray-50 min-h-screen">
+      <div className="flex-1 p-8 bg-gray-50 min-h-screen">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center text-sm text-gray-500 mb-2">
-          <span>Pages</span>
-          <span className="mx-2">/</span>
-          <span>Riwayat</span>
-        </div>
-      </div>
+      <Header 
+          breadcrumbPath="Pages / Riwayat"
+          userName="A"
+          showSearchBar={true}
+          searchPlaceholder="Type here"
+          onSearchChange={(e) => console.log(e.target.value)}
+        />
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">

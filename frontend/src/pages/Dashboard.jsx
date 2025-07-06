@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 import { useEffect } from "react";
 
 const Dashboard = () => {
@@ -157,21 +158,13 @@ const Dashboard = () => {
         {/* Main Content */}
         <div className="ml-64 flex-1 p-8">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <p className="text-gray-500">Pages / Dashboard</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Type here"
-                className="px-4 py-2 border rounded-lg"
-              />
-              <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold">
-                {form.name.charAt(0)}
-              </div>
-            </div>
-          </div>
+          <Header 
+            breadcrumbPath="Pages / Dashboard"
+            userName={form.name}
+            showSearchBar={true}
+            searchPlaceholder="Type here"
+            onSearchChange={(e) => console.log(e.target.value)}
+          />
 
           {/* Welcome Banner */}
           <div className="bg-gradient-to-r from-teal-400 to-teal-500 rounded-lg p-8 text-white mb-8">
