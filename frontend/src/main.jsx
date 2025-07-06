@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard.jsx'
 import ProtectedRoutes from './Context/ProtectedRoutes.jsx'
 import Riwayat from './pages/Riwayat.jsx'
 import Profile from './pages/Profile.jsx'
+import KalenderJadwal from './pages/KalenderJadwal.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
 
 const routes = createBrowserRouter([
@@ -20,6 +21,7 @@ const routes = createBrowserRouter([
   {path: '/dashboard', element :<ProtectedRoutes/> ,children:[{ index: true, element:  <Dashboard/>}]},
   {path: '*', element: <App/>},
   {path: '/riwayat', element: <Riwayat/>},
+  {path: '/kalender', element: <KalenderJadwal/>},
   {path: '/profile', element: <Profile/>,}
 ])
 

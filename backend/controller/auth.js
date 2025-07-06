@@ -11,7 +11,6 @@ const prisma = new PrismaClient()
 const authRoutes = Router()
 
 
-
 const buatToken = (userId, role)=>{
     return jewete.sign({id: userId, role}, process.env.JWT_RAHASIA, {
         expiresIn: process.env.JWT_EXPIRES_IN,
