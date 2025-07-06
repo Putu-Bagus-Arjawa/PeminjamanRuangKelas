@@ -38,7 +38,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
     { name: 'Dashboard', icon: HomeIcon, active: false },
     { name: 'List Ruangan', icon: ListIcon, active: true },
     { name: 'Booking Ruang', icon: CalendarIcon, active: false },
-    { name: 'Riwayat Booking', icon: UserIcon, active: false }
+    { name: 'Riwayat Booking', icon: UserIcon, active: false },
   ];
 
   const accountPages = [
@@ -46,11 +46,28 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
     { name: 'Log Out', icon: LogInIcon, active: false }
   ];
 
+  const handleMenuItemsClick = (pageName) => {
+    if (pageName === 'Dashboard') {
+      navigate('/dashboard');
+    }
+    if (pageName === 'List Ruangan') {
+      navigate('/listruangan');
+    }
+    if (pageName === 'Booking Ruang') {
+      navigate('/booking');
+    }
+    if (pageName === 'Riwayat Booking') {
+      navigate('/riwayat');
+    }
+  };
+
   const handleAccountPageClick = (pageName) => {
     if (pageName === 'Log Out') {
       navigate('/login');
     }
-    // Add other navigation logic here if needed for Profile page
+    if (pageName === 'Profile') {
+      navigate('/profile');
+    }
   };
 
   return (
@@ -64,7 +81,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
           {menuItems.map((item) => (
             <div
               key={item.name}
-              onClick={() => setActiveMenu(item.name)}
+              onClick={() => handleMenuItemsClick(item.name)}
               className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mb-2 cursor-pointer transition-colors ${
                 item.name === activeMenu
                   ? 'bg-teal-50 text-teal-600 border-r-2 border-teal-600'
@@ -90,7 +107,12 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
               <div
                 key={item.name}
                 onClick={() => handleAccountPageClick(item.name)}
-                className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg mb-2 cursor-pointer hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mb-2 cursor-pointer transition-colors ${
+                item.name === activeMenu
+                  ? 'bg-teal-50 text-teal-600 border-r-2 border-teal-600'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+                
               >
                 <div className="mr-3 text-gray-400">
                   <item.icon />

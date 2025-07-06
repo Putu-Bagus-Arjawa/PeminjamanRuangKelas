@@ -43,6 +43,12 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
     if (pageName === 'Log Out') {
       navigate('/login');
     }
+    if (pageName === 'Profile') {
+      navigate('/profile');
+    }
+    if (pageName === 'Dashboard') {
+      navigate('/admin');
+    }
     // Add other navigation logic here if needed for Profile page
   };
 
