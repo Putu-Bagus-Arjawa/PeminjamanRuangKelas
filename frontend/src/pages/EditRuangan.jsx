@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 import Header from '../components/Header.jsx';
