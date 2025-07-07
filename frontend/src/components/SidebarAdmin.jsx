@@ -7,12 +7,6 @@ const HomeIcon = () => (
   </svg>
 );
 
-const ListIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-  </svg>
-);
-
 const CalendarIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -36,30 +30,14 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
 
   const menuItems = [
     { name: 'Dashboard', icon: HomeIcon, active: false },
-    { name: 'List Ruangan', icon: ListIcon, active: true },
-    { name: 'Booking Ruang', icon: CalendarIcon, active: false },
-    { name: 'Riwayat Booking', icon: UserIcon, active: false },
+    { name: 'Manajemen Ruangan', icon: CalendarIcon, active: false },
+    { name: 'Manajemen Pengguna', icon: UserIcon, active: false }
   ];
 
   const accountPages = [
     { name: 'Profile', icon: UserIcon, active: false },
     { name: 'Log Out', icon: LogInIcon, active: false }
   ];
-
-  const handleMenuItemsClick = (pageName) => {
-    if (pageName === 'Dashboard') {
-      navigate('/dashboard');
-    }
-    if (pageName === 'List Ruangan') {
-      navigate('/listruangan');
-    }
-    if (pageName === 'Booking Ruang') {
-      navigate('/booking');
-    }
-    if (pageName === 'Riwayat Booking') {
-      navigate('/riwayat');
-    }
-  };
 
   const handleAccountPageClick = (pageName) => {
     if (pageName === 'Log Out') {
@@ -68,6 +46,10 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
     if (pageName === 'Profile') {
       navigate('/profile');
     }
+    if (pageName === 'Dashboard') {
+      navigate('/admin');
+    }
+    // Add other navigation logic here if needed for Profile page
   };
 
   return (
@@ -81,7 +63,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
           {menuItems.map((item) => (
             <div
               key={item.name}
-              onClick={() => handleMenuItemsClick(item.name)}
+              onClick={() => setActiveMenu(item.name)}
               className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mb-2 cursor-pointer transition-colors ${
                 item.name === activeMenu
                   ? 'bg-teal-50 text-teal-600 border-r-2 border-teal-600'
@@ -107,12 +89,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
               <div
                 key={item.name}
                 onClick={() => handleAccountPageClick(item.name)}
-                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg mb-2 cursor-pointer transition-colors ${
-                item.name === activeMenu
-                  ? 'bg-teal-50 text-teal-600 border-r-2 border-teal-600'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-              }`}
-                
+                className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg mb-2 cursor-pointer hover:text-gray-900 hover:bg-gray-50 transition-colors"
               >
                 <div className="mr-3 text-gray-400">
                   <item.icon />
