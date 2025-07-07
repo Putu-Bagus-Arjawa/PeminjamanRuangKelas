@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 
-const Dashboard = () => {
+const Riwayat = () => {
     const [activeMenu, setActiveMenu] = useState('Riwayat Booking');
   // Sample data - replace with your actual data
   const borrowingData = [
@@ -150,4 +150,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Riwayat;

@@ -16,6 +16,7 @@ import ProfileAdmin from './pages/ProfileAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
 import { UserProvider } from './Context/UserContext.jsx'
 import BookingForm from './pages/BookingForm.jsx'
+import ManajemenRuangan from './pages/ManajemenRuangan.jsx'
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
@@ -28,6 +29,7 @@ const routes = createBrowserRouter([
   {path: '/admin', element: <DashboardAdmin/>},
   {path: '/booking', element: <BookingForm/>},
   {path: '/profileadmin', element: <ProfileAdmin/>},
+  {path: '/manajemenruangan', element: <ManajemenRuangan/>},
 ])
 
 createRoot(document.getElementById('root')).render(
