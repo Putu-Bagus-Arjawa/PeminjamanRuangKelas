@@ -56,7 +56,7 @@ const Dashboard = () => {
         />
 
         <div className="bg-gradient-to-r from-teal-400 to-teal-500 rounded-lg p-8 text-white mb-8">
-          <h1 className="text-3xl font-bold">Selamat Datang Bagus</h1>
+          <h1 className="text-3xl font-bold">Selamat Datang {form.name}</h1>
           <p className="mt-2">Ayo mulai reservasi ruangan dengan mudah dan nyaman</p>
         </div>
 
