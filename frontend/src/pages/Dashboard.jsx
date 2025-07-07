@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import BookingForm from "./BookingForm";
 import ReservationTable from "../components/ReservationTable";
 
 const Dashboard = () => {

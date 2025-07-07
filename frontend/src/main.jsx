@@ -25,7 +25,7 @@ const routes = createBrowserRouter([
   {path: '*', element: <App/>},
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
-  {path: '/admin', element: <DashboardAdmin/>}
+  {path: '/admin', element: <DashboardAdmin/>},
   {path: '/booking', element: <BookingForm/>},
   {path: '/profileadmin', element: <ProfileAdmin/>},
 ])
