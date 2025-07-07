@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Search, User, Bell, Settings } from 'lucide-react';
+import { Search, User, Bell, Settings, Edit } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 
 const Dashboard = () => {
@@ -10,6 +11,7 @@ const Dashboard = () => {
     fasilitas: '',
     lokasi: ''
   });
+    const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     nama: '',
     email: '',
@@ -49,6 +51,16 @@ const Dashboard = () => {
     console.log('User submitted:', newUser);
     setNewUser({ nama: '', email: '', password: '', role: '' });
   };
+
+    const handleEdit = (rowId) => {
+    console.log('Edit button clicked for room ID:', rowId);
+    try {
+      navigate(`/approve/${rowId}`);
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -135,7 +147,17 @@ const Dashboard = () => {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.tanggal}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-900 cursor-pointer">
+                                    <button 
+                                    onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleEdit(row.id);
+                                    }}
+                                    className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+                                    >
+                                    <Edit size={16} />
                                     Edit
+                                </button>
                                 </td>
                                 </tr>
                             ))}
