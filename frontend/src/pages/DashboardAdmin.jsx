@@ -145,67 +145,13 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Dashboard Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Column - Chart */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-gray-800 rounded-lg p-6 text-white">
-                        <h3 className="text-lg font-semibold mb-4">Peminjaman</h3>
-                        <p className="text-sm text-gray-300 mb-6">14:29 | Menunggu Konfirmasi</p>
-                        
-                        {/* Bar Chart */}
-                        <div className="flex items-end justify-between h-32 mb-6">
-                            {[60, 40, 80, 35, 70, 45, 90, 25, 55, 65].map((height, index) => (
-                            <div key={index} className="flex flex-col items-center">
-                                <div
-                                className="w-4 bg-white rounded-t"
-                                style={{ height: `${height}%` }}
-                                ></div>
-                            </div>
-                            ))}
-                        </div>
-
-                        {/* Stats */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="text-center">
-                            <div className="flex items-center justify-center mb-2">
-                                <div className="w-3 h-3 bg-blue-400 rounded-full mr-2"></div>
-                                <span className="text-sm">Berhasil</span>
-                            </div>
-                            <div className="text-2xl font-bold">25</div>
-                            </div>
-                            <div className="text-center">
-                            <div className="flex items-center justify-center mb-2">
-                                <div className="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
-                                <span className="text-sm">Disetujui</span>
-                            </div>
-                            <div className="text-2xl font-bold">16</div>
-                            </div>
-                            <div className="text-center">
-                            <div className="flex items-center justify-center mb-2">
-                                <div className="w-3 h-3 bg-teal-400 rounded-full mr-2"></div>
-                                <span className="text-sm">Menunggu</span>
-                            </div>
-                            <div className="text-2xl font-bold">5</div>
-                            </div>
-                            <div className="text-center">
-                            <div className="flex items-center justify-center mb-2">
-                                <div className="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
-                                <span className="text-sm">Jadwal</span>
-                            </div>
-                            <div className="text-2xl font-bold">10</div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    {/* Right Column - Forms */}
-                    <div className="lg:col-span-2 space-y-8">
-                        {/* Add Room Form */}
-                        <div className="bg-teal-500 rounded-lg p-6 text-white">
+                {/* Side by Side Forms Container */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Add Room Form */}
+                    <div className="bg-teal-500 rounded-lg p-6 text-white">
                         <h3 className="text-xl font-bold mb-6 text-center">TAMBAH RUANGAN</h3>
                         <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium mb-2">Nama Ruangan</label>
                                 <input
@@ -256,13 +202,13 @@ const Dashboard = () => {
                             </button>
                             </div>
                         </div>
-                        </div>
+                    </div>
 
-                        {/* Add User Form */}
-                        <div className="bg-white rounded-lg p-6 shadow">
+                    {/* Add User Form */}
+                    <div className="bg-gray-200 rounded-lg p-6 shadow">
                         <h3 className="text-xl font-bold mb-6 text-center text-gray-900">Tambah Pengguna</h3>
                         <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Nama</label>
                                 <input
@@ -312,7 +258,6 @@ const Dashboard = () => {
                                 Submit
                             </button>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>

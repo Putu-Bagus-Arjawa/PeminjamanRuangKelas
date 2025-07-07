@@ -12,6 +12,7 @@ import ProtectedRoutes from './Context/ProtectedRoutes.jsx'
 import Riwayat from './pages/Riwayat.jsx'
 import Profile from './pages/Profile.jsx'
 import DashboardAdmin from './pages/DashboardAdmin.jsx'
+import ProfileAdmin from './pages/ProfileAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
 
 const routes = createBrowserRouter([
@@ -22,7 +23,8 @@ const routes = createBrowserRouter([
   {path: '*', element: <App/>},
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
-  {path: '/admin', element: <DashboardAdmin/>}
+  {path: '/admin', element: <DashboardAdmin/>},
+  {path: '/profileadmin', element: <ProfileAdmin/>},
 ])
 
 createRoot(document.getElementById('root')).render(
