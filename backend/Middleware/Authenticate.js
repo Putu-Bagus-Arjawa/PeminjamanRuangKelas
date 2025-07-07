@@ -1,12 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv"
-import { Router } from "express";
 import jewete from "jsonwebtoken"
 
 
 dotenv.config()
 const prisma = new PrismaClient()
-const routes = Router()
+
 
 export const authenticate = async (req,res, next)=>{
     const token=  req.cookies.token
@@ -22,22 +21,6 @@ export const authenticate = async (req,res, next)=>{
     }
 }
 
-const otorisasiAdmin =  (req, res, next)=>{
-    if(req.user.role !== 'ADMIN') return res.status(403).json({message:"Anda tidak punya akses"})
-    next()
-}
 
 
 
-routes.get('/user', authenticate, async (req, res)=>{
-    try {
-        const myData = await prisma.user.findUnique({
-        where: {id: req.user.id}, 
-        select:{id:true, name:true,email:true, role:true}
-    })
-        res.status(200).json(myData)
-     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch user data' });
-     }
-})
-export default routes

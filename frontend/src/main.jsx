@@ -14,23 +14,28 @@ import Profile from './pages/Profile.jsx'
 import DashboardAdmin from './pages/DashboardAdmin.jsx'
 import ProfileAdmin from './pages/ProfileAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
+import { UserProvider } from './Context/UserContext.jsx'
+import BookingForm from './pages/BookingForm.jsx'
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
   {path: '/login', element: <Login/>},
   {path: '/listruangan', element: <ListRuangan/>},
-  {path: '/dashboard', element :<ProtectedRoutes/> ,children:[{ index: true, element:  <Dashboard/>}]},
+  {path: '/', element :<ProtectedRoutes/> ,children:[{ index: true, element:  <Dashboard/>}]},
   {path: '*', element: <App/>},
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
-  {path: '/admin', element: <DashboardAdmin/>},
+  {path: '/admin', element: <DashboardAdmin/>}
+  {path: '/booking', element: <BookingForm/>},
   {path: '/profileadmin', element: <ProfileAdmin/>},
 ])
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={routes}/>
+      <UserProvider>
+        <RouterProvider router={routes}/>
+      </UserProvider>
     </AuthProvider>
   </StrictMode>,
 )

@@ -48,5 +48,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// ✅ Cara yang benar untuk expose ke komponen lain
 export const useAuth = () => useContext(AuthContext);

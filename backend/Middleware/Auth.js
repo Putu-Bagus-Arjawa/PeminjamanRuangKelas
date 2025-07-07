@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv"
 import bcrypt from "bcrypt"
 import jewete from "jsonwebtoken"
-import { authenticate } from "./Middleware.js";
+import { authenticate } from "./Authenticate.js";
+
+
+
 
 dotenv.config()
 
@@ -80,12 +83,10 @@ authRoutes.post('/login', async (req, res)=>{
             return res.status(401).json({message: "Username or Password invalid"})
         }
 
-        const token = buatToken(user.id, user.role, user.email, user.name);
-
+        const token = buatToken(user.id, user.role);
 
         res.cookie("token", token, {httpOnly:true, sameSite:"strict", maxAge:1000*60*60})
-        res.json({redirectUrl: user.role == "ADMIN"? "/"  : "/", message:"Login succeed"})
-
+        res.json({redirectUrl: user.role == "ADMIN"? "/admin"  : "/", message:"Login succeed"})
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
@@ -96,7 +97,10 @@ authRoutes.post('/login', async (req, res)=>{
 })
 
 authRoutes.delete("/logout", (req, res)=>{
-    res.clearCookie()
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "Strict",   
+    })
     res.json({message: "Anda berhasil logout"})
 })
 
