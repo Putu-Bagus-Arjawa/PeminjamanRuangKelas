@@ -14,7 +14,10 @@ import Profile from './pages/Profile.jsx'
 import DashboardAdmin from './pages/DashboardAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
 import { UserProvider } from './Context/UserContext.jsx'
+import EditUser from './pages/EditUser.jsx'
+import ManajemenPengguna from './pages/ManajemenPengguna.jsx'
 import BookingForm from './pages/BookingForm.jsx'
+
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
@@ -25,6 +28,8 @@ const routes = createBrowserRouter([
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
   {path: '/admin', element: <DashboardAdmin/>},
+  {path: '/manajemenpengguna', element: <ManajemenPengguna/>},
+  {path: '/edituser/:id', element: <EditUser/>},
   {path: '/booking', element: <BookingForm/>}
 ])
 
