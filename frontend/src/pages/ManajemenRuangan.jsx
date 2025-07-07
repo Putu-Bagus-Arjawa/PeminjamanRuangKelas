@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Search, User, Bell, Settings, Edit } from 'lucide-react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 import Header from '../components/Header.jsx';
 
 const ManajemenRuangan = () => {
     const [activeMenu, setActiveMenu] = useState('Manajemen Ruangan');
+    const navigate = useNavigate();
   
   // Sample room data - replace with your actual data
   const roomData = [
@@ -53,8 +55,12 @@ const ManajemenRuangan = () => {
   ];
 
   const handleEdit = (roomId) => {
-    console.log(`Edit room with ID: ${roomId}`);
-    // Add your edit logic here
+    console.log('Edit button clicked for room ID:', roomId);
+    try {
+      navigate(`/editruangan/${roomId}`);
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
   };
 
   return (
@@ -111,7 +117,11 @@ const ManajemenRuangan = () => {
                     </td>
                     <td className="py-4 px-4">
                       <button 
-                        onClick={() => handleEdit(room.id)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleEdit(room.id);
+                        }}
                         className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
                       >
                         <Edit size={16} />
