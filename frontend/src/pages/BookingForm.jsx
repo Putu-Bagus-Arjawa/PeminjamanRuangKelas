@@ -45,7 +45,7 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-teal-400 to-teal-500 rounded-lg p-8 mb-8">
+    <div className="w-[80vw] h-auto bg-gradient-to-r from-teal-400 to-teal-500 rounded-lg p-8 mb-8">
       <h2 className="text-xl font-bold text-white text-center mb-6">
         FORM BOOKING RUANGAN
       </h2>

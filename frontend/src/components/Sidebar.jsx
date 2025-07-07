@@ -31,7 +31,7 @@ const LogInIcon = () => (
   </svg>
 );
 
-export default function Sidebar({ activeMenu, setActiveMenu }) {
+export default function Sidebar({ activeMenu }) {
   const navigate = useNavigate();
 
   const menuItems = [
@@ -48,7 +48,7 @@ export default function Sidebar({ activeMenu, setActiveMenu }) {
 
   const handleMenuItemsClick = (pageName) => {
     if (pageName === 'Dashboard') {
-      navigate('/dashboard');
+      navigate('/');
     }
     if (pageName === 'List Ruangan') {
       navigate('/listruangan');
