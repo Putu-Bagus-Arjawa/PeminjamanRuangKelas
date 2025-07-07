@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from "dotenv"
 import cors from "cors"
-import authRoutes from "./controller/Auth.js";
 import cookieParser from "cookie-parser";
 import routes from "./controller/Middleware.js";
+import authRoutes from "./Middleware/Auth.js";
 
 
 
