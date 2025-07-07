@@ -18,7 +18,7 @@ const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
   {path: '/login', element: <Login/>},
   {path: '/listruangan', element: <ListRuangan/>},
-  {path: '/dashboard', element :<ProtectedRoutes/> ,children:[{ index: true, element:  <Dashboard/>}]},
+  {path: '/', element :<ProtectedRoutes/> ,children:[{ index: true, element:  <Dashboard/>}]},
   {path: '*', element: <App/>},
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
