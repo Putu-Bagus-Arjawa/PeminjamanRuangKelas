@@ -13,6 +13,7 @@ import Riwayat from './pages/Riwayat.jsx'
 import Profile from './pages/Profile.jsx'
 import DashboardAdmin from './pages/DashboardAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
+import { UserProvider } from './Context/UserContext.jsx'
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
@@ -28,7 +29,9 @@ const routes = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={routes}/>
+      <UserProvider>
+        <RouterProvider router={routes}/>
+      </UserProvider>
     </AuthProvider>
   </StrictMode>,
 )

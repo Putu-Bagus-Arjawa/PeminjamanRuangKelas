@@ -5,6 +5,9 @@ import bcrypt from "bcrypt"
 import jewete from "jsonwebtoken"
 import { authenticate } from "./Authenticate.js";
 
+
+
+
 dotenv.config()
 
 const prisma = new PrismaClient()

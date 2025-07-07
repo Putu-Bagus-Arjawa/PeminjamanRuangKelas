@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
   
   const UserContext = createContext();
   
-  export const AuthProvider = ({ children }) => {
+  export const UserProvider = ({ children }) => {
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true)
 
@@ -29,4 +29,4 @@ import { createContext, useContext, useEffect, useState } from "react";
   };
   
   
-  export const useAuth = () => useContext(UserContext);
+  export const useUser = () => useContext(UserContext);
