@@ -12,9 +12,16 @@ import ProtectedRoutes from './Context/ProtectedRoutes.jsx'
 import Riwayat from './pages/Riwayat.jsx'
 import Profile from './pages/Profile.jsx'
 import DashboardAdmin from './pages/DashboardAdmin.jsx'
+import ProfileAdmin from './pages/ProfileAdmin.jsx'
 import { AuthProvider } from './Context/AuthContext.jsx'
 import { UserProvider } from './Context/UserContext.jsx'
+import EditUser from './pages/EditUser.jsx'
+import ManajemenPengguna from './pages/ManajemenPengguna.jsx'
 import BookingForm from './pages/BookingForm.jsx'
+import ManajemenRuangan from './pages/ManajemenRuangan.jsx'
+import EditRuangan from './pages/EditRuangan.jsx'
+import Approval from './pages/Approval.jsx'
+
 
 const routes = createBrowserRouter([
   {path: '/register', element: <Register/>},
@@ -25,7 +32,13 @@ const routes = createBrowserRouter([
   {path: '/riwayat', element: <Riwayat/>},
   {path: '/profile', element: <Profile/>},
   {path: '/admin', element: <DashboardAdmin/>},
-  {path: '/booking', element: <BookingForm/>}
+  {path: '/booking', element: <BookingForm/>},
+  {path: '/profileadmin', element: <ProfileAdmin/>},
+  {path: '/manajemenruangan', element: <ManajemenRuangan/>},
+  {path: '/editruangan/:id', element: <EditRuangan/>},
+  {path: '/approve/:id', element: <Approval/>},
+  {path: '/manajemenpengguna', element: <ManajemenPengguna/>},
+  {path: '/edituser/:id', element: <EditUser/>},
 ])
 
 createRoot(document.getElementById('root')).render(
@@ -35,5 +48,5 @@ createRoot(document.getElementById('root')).render(
         <RouterProvider router={routes}/>
       </UserProvider>
     </AuthProvider>
-  </StrictMode>,
+  </StrictMode>
 )

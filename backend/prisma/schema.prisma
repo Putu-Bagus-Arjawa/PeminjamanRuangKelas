@@ -28,7 +28,11 @@ model User {
 
 model Ruangan {
   id              Int           @id @default(autoincrement())
+<<<<<<< HEAD
   nama_ruangan    String 
+=======
+  nama_ruangan    String
+>>>>>>> 7b1e0a13c35651f547970f7dd05edc81e4e1bdb8
   kapasitas       Int
   fasilitas       String
   lokasi_ruangan  String
