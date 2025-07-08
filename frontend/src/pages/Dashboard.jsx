@@ -3,12 +3,35 @@ import Header from "../components/Header";
 import ReservationTable from "../components/ReservationTable";
 import { useUserContext } from "../Context/UserContext";
 import Loading from "../components/Loading";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const Dashboard = () => {
   const {user, loading} = useUserContext()
+  const [ruangan, setRuangan] = useState([]);
+  const [load, setLoad] = useState(true);  
+
+  useEffect(() => {
+    const fetchRuangan = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/room/roomdisplay");
+        if (!response.ok) throw new Error("Gagal fetch data ruangan");
+
+        const data = await response.json();
+        setRuangan(data);
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoad(false);
+      }
+    };
+
+    fetchRuangan();
+  }, []);
+
 
   if(loading) return  <Loading/>
-
+  if (load) return <Loading/>
 
   const cards = [
     { title: "Ruangan Tersedia", value: 12, note: "Ruangan tersedia saat ini" },
@@ -17,11 +40,9 @@ const Dashboard = () => {
     { title: "Reservasi Ditolak", value: 0, note: "Total reservasi ditolak" },
   ];
 
-  const rooms = [
-    { name: "Ruang 1.1", desc: "Ruang kelas Bawah Fasilitas", kapasitas: 40 },
-    { name: "Lab Kom 2", desc: "Ruang Kelas Bawah Fasilitas", kapasitas: 35 },
-    { name: "Ruang 2.5", desc: "Ruang Kelas Lantai 2 Fasilitas", kapasitas: 40 },
-  ];
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -56,13 +77,14 @@ const Dashboard = () => {
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Peminjaman Ruangan</h2>
           <div className="grid grid-cols-4 gap-6">
-            {rooms.map((room, idx) => (
-              <div key={idx} className="bg-white rounded-lg shadow overflow-hidden">
-                <div className="h-32 bg-gray-200"></div>
+            {ruangan.map((room) => (
+              <div key={room.id} className="bg-white rounded-lg shadow overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop" alt="" />
                 <div className="p-4">
-                  <h3 className="font-semibold">{room.name}</h3>
-                  <p className="text-sm text-gray-500">{room.desc}</p>
+                  <h3 className="font-semibold">{room.nama_ruangan}</h3>
+                  <p className="text-sm text-gray-500">{room.fasilitas}</p>
                   <p className="text-xs text-gray-400">Kapasitas: {room.kapasitas}</p>
+                  <p className="text-xs text-gray-400">Lokasi: {room.lokasi_ruangan}</p>
                 </div>
               </div>
             ))}
@@ -70,14 +92,13 @@ const Dashboard = () => {
             <div className="bg-white rounded-lg shadow overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center h-60">
               <div className="text-center">
                 <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-2xl text-gray-400">+</span>
+                  <Link to={"/listruangan"} className="text-2xl text-gray-400">+</Link>
                 </div>
                 <p className="text-sm text-gray-500">Cari Ruangan Lain</p>
               </div>
             </div>
           </div>
         </div>
-        {/* TABLE */}
         <ReservationTable />
       </div>
     </div>

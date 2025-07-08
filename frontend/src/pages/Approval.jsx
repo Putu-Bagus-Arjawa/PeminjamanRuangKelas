@@ -9,7 +9,6 @@ const Approval = () => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState('Approval');
   
-  // Form state
   const [formData, setFormData] = useState({
     room: '',
     user: '',
@@ -22,7 +21,6 @@ const Approval = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // Sample data - replace with actual API call
   const sampleBookingData = {
     1: { 
       room: "Ruang 1.1", 
@@ -139,7 +137,7 @@ const Approval = () => {
 
             {/* User */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+              <label className=" text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                 <User className="w-4 h-4" />
                 Pemesan
               </label>

@@ -52,4 +52,16 @@ roomRoutes.get("/", async (req, res) => {
   }
 });
 
+roomRoutes.get('/roomdisplay', async (req, res) => {
+  try {
+    const ruangan = await prisma.ruangan.findMany({
+      take: 3
+    });
+    res.json(ruangan);
+  } catch (error) {
+    res.status(500).json({ error: 'Gagal mengambil data ruangan' });
+  }
+});
+
+
 export default roomRoutes;
