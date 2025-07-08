@@ -42,4 +42,14 @@ roomRoutes.post("/create", async (req, res) => {
   }
 });
 
+roomRoutes.get("/", async (req, res) => {
+  try {
+    const ruangan = await prisma.ruangan.findMany();
+    res.status(200).json(ruangan);
+  } catch (error) {
+    console.error('Error fetching ruangan:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default roomRoutes;
