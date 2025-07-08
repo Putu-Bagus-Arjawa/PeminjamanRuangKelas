@@ -1,30 +1,14 @@
-import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import ReservationTable from "../components/ReservationTable";
+import { useUserContext } from "../Context/UserContext";
+import Loading from "../components/Loading";
 
 const Dashboard = () => {
-  const [form, setForm] = useState({
-    name: "name",
-    email: "",
-    role: "",
-  });
+  const {user, loading} = useUserContext()
 
-  const loadData = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/user", {
-        credentials: "include",
-      });
-      const data = await res.json();
-      if (res.ok) setForm(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  if(loading) return  <Loading/>
 
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const cards = [
     { title: "Ruangan Tersedia", value: 12, note: "Ruangan tersedia saat ini" },
@@ -48,14 +32,14 @@ const Dashboard = () => {
       <div className="ml-64 flex-1 p-8">
         <Header
           breadcrumbPath="Pages / Dashboard"
-          userName={form.name}
+          userName={user.name}
           showSearchBar
           searchPlaceholder="Type here"
           onSearchChange={(e) => console.log(e.target.value)}
         />
 
         <div className="bg-gradient-to-r from-teal-400 to-teal-500 rounded-lg p-8 text-white mb-8">
-          <h1 className="text-3xl font-bold">Selamat Datang {form.name}</h1>
+          <h1 className="text-3xl font-bold">Selamat Datang {user.name}</h1>
           <p className="mt-2">Ayo mulai reservasi ruangan dengan mudah dan nyaman</p>
         </div>
 
