@@ -3,56 +3,16 @@ import { useNavigate } from 'react-router';
 import { Search, User, Bell, Settings, Edit } from 'lucide-react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 import Header from '../components/Header.jsx';
+import { useRoomContext } from '../Context/RoomContext.jsx';
+import Loading from '../components/Loading.jsx';
 
 const ManajemenRuangan = () => {
     const [activeMenu, setActiveMenu] = useState('Manajemen Ruangan');
     const navigate = useNavigate();
+    const {room, loading} = useRoomContext()
+
+    if (loading) return <Loading/>
   
-  // Sample room data - replace with your actual data
-  const roomData = [
-    {
-      id: 1,
-      name: "Ruang 1.1",
-      capacity: "40 orang",
-      facilities: ["Proyektor", "AC", "Whiteboard"],
-      location: "Gedung A Lantai 1"
-    },
-    {
-      id: 2,
-      name: "Ruang 2.1",
-      capacity: "35 orang",
-      facilities: ["Proyektor", "AC", "Sound System"],
-      location: "Gedung A Lantai 2"
-    },
-    {
-      id: 3,
-      name: "Lab Kom 1",
-      capacity: "30 orang",
-      facilities: ["Komputer", "Proyektor", "AC"],
-      location: "Gedung B Lantai 1"
-    },
-    {
-      id: 4,
-      name: "Ruang 2.3",
-      capacity: "50 orang",
-      facilities: ["Proyektor", "AC", "Microphone"],
-      location: "Gedung A Lantai 2"
-    },
-    {
-      id: 5,
-      name: "Ruang 1.2",
-      capacity: "45 orang",
-      facilities: ["Proyektor", "AC", "Whiteboard", "Sound System"],
-      location: "Gedung A Lantai 1"
-    },
-    {
-      id: 6,
-      name: "Ruang 3.4",
-      capacity: "60 orang",
-      facilities: ["Proyektor", "AC", "Podium", "Sound System"],
-      location: "Gedung A Lantai 3"
-    }
-  ];
 
   const handleEdit = (roomId) => {
     console.log('Edit button clicked for room ID:', roomId);
@@ -92,28 +52,27 @@ const ManajemenRuangan = () => {
                 </tr>
               </thead>
               <tbody>
-                {roomData.map((room) => (
+                {room.map((room) => (
                   <tr key={room.id} className="border-b hover:bg-gray-50 transition-colors">
                     <td className="py-4 px-4">
-                      <span className="font-medium text-gray-900">{room.name}</span>
+                      <span className="font-medium text-gray-900">{room.nama_ruangan}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-900">{room.capacity}</span>
+                      <span className="text-gray-900">{room.kapasitas}</span>
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex flex-wrap gap-1">
-                        {room.facilities.map((facility, index) => (
                           <span 
-                            key={index}
+                            
                             className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
                           >
-                            {facility}
+                            {room.fasilitas}
                           </span>
-                        ))}
+
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-900">{room.location}</span>
+                      <span className="text-gray-900">{room.lokasi_ruangan}</span>
                     </td>
                     <td className="py-4 px-4">
                       <button 
