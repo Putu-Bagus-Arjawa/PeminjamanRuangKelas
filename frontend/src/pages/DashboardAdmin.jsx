@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+ import { useState } from 'react';
 import { Search, User, Bell, Settings, Edit } from 'lucide-react';
-import { useParams, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 
 const Dashboard = () => {

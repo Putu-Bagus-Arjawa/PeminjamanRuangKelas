@@ -1,14 +1,13 @@
-import React from 'react';
+import Loading from '../components/Loading.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import { useUserContext } from '../Context/UserContext.jsx';
 
 const ProfilePage = () => {
-  const profileData = {
-    name: "Bagus Arjawa S.kom, M.Kom",
-    email: "bagusarjawa@gmail.com",
-    id: "123456",
-    role: "Admin",
-    password: "********"
-  };
+
+
+  const {user, loading} = useUserContext()
+
+  if (loading) return <Loading/>
 
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2);
@@ -38,25 +37,21 @@ const ProfilePage = () => {
             <div className="text-center">
               <div className="relative inline-block">
                 <div className="w-32 h-32 bg-teal-500 rounded-full flex items-center justify-center text-white font-bold text-3xl mx-auto mb-4">
-                  {getInitials(profileData.name)}
+                  {getInitials(user.name)}
                 </div>
               </div>
-              <h2 className="text-xl font-bold text-gray-800 mb-1">{profileData.name}</h2>
-              <p className="text-gray-600 mb-2">{profileData.role}</p>
+              <h2 className="text-xl font-bold text-gray-800 mb-1">{user.name}</h2>
+              <p className="text-gray-600 mb-2">{user.role}</p>
             </div>
 
             <div className="mt-6 pt-6 border-t space-y-4">
               <div>
                 <p className="text-sm font-medium text-gray-600">Email</p>
-                <p className="text-gray-800">{profileData.email}</p>
+                <p className="text-gray-800">{user.email}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{profileData.id}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">Password</p>
-                <p className="text-gray-800">{profileData.password}</p>
+                <p className="text-gray-800">{user.id}</p>
               </div>
             </div>
           </div>
