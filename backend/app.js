@@ -4,6 +4,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser";
 import authRoutes from "./Middleware/Auth.js";
 import userRoutes from "./controller/User.js";
+import roomRoutes from "./controller/roomController.js";
 
 
 
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use("/auth", authRoutes)
+app.use("/room", roomRoutes)
 app.use(userRoutes)
 
 app.listen(PORT, ()=> console.log(`server succesfully run at port ${PORT}`))
