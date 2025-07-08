@@ -1,23 +1,88 @@
- import { useState } from 'react';
-import { Search, User, Bell, Settings, Edit } from 'lucide-react';
+import { useState } from 'react';
+import { User, Bell, Settings, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 
 const Dashboard = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
   const [newRoom, setNewRoom] = useState({
-    nama: '',
-    kapasitas: '',
+    nama_ruangan: '',
+    kapasitas: 0,
     fasilitas: '',
-    lokasi: ''
+    lokasi_ruangan: ''
   });
-    const navigate = useNavigate();
+
   const [newUser, setNewUser] = useState({
-    nama: '',
+    name: '', // ✅ GANTI dari "nama"
     email: '',
     password: '',
     role: ''
   });
+
+  const [message, setMessage] = useState({ pesan: '', tipe: '' });
+
+  const handleCreateRoom = async (e) => {
+    e.preventDefault();
+
+    try {
+      const respons = await fetch('http://localhost:5000/room/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(newRoom)
+      });
+
+      const data = await respons.json();
+
+      if (respons.ok) {
+        setNewRoom({
+          nama_ruangan: '',
+          kapasitas: 0,
+          fasilitas: '',
+          lokasi_ruangan: ''
+        });
+        setMessage({ pesan: data.message, tipe: 'success' });
+      } else {
+        setMessage({ pesan: data.message, tipe: 'failed' });
+      }
+    } catch (error) {
+      setMessage({ pesan: error.message || 'Terjadi kesalahan', tipe: 'failed' });
+    }
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+
+    try {
+      const respons = await fetch('http://localhost:5000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(newUser)
+      });
+
+      const data = await respons.json();
+
+      if (respons.ok) {
+        setNewUser({
+          name: '',
+          email: '',
+          password: '',
+          role: ''
+        });
+        setMessage({ pesan: data.message, tipe: 'success' });
+      } else {
+        setMessage({ pesan: data.message, tipe: 'failed' });
+      }
+    } catch (error) {
+      setMessage({ pesan: error.message || 'Terjadi kesalahan', tipe: 'failed' });
+    }
+  };
 
   const tableData = [
     { id: 1, name: 'Bob Robert', email: 'robert@example.com', ruangan: 'Ruang 1.1', jadwal: 'Kuliah', status: 'Disetujui', tanggal: '14/06/21' },
@@ -29,8 +94,8 @@ const Dashboard = () => {
   ];
 
   const getStatusBadge = (status) => {
-    const baseClasses = "px-3 py-1 rounded-full text-sm font-medium";
-    switch(status) {
+    const baseClasses = 'px-3 py-1 rounded-full text-sm font-medium';
+    switch (status) {
       case 'Disetujui':
         return `${baseClasses} bg-green-100 text-green-800`;
       case 'Pending':
@@ -42,249 +107,119 @@ const Dashboard = () => {
     }
   };
 
-  const handleRoomSubmit = () => {
-    console.log('Room submitted:', newRoom);
-    setNewRoom({ nama: '', kapasitas: '', fasilitas: '', lokasi: '' });
+  const handleEdit = (rowId) => {
+    navigate(`/approve/${rowId}`);
   };
-
-  const handleUserSubmit = () => {
-    console.log('User submitted:', newUser);
-    setNewUser({ nama: '', email: '', password: '', role: '' });
-  };
-
-    const handleEdit = (rowId) => {
-    console.log('Edit button clicked for room ID:', rowId);
-    try {
-      navigate(`/approve/${rowId}`);
-    } catch (error) {
-      console.error('Navigation error:', error);
-    }
-  };
-
 
   return (
     <div className="min-h-screen bg-gray-50">
-        {/* Sidebar */}
-        <div className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg z-10">
-            <SidebarAdmin activeMenu="Dashboard" setActiveMenu={() => {}} />
+      <div className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg z-10">
+        <SidebarAdmin activeMenu="Dashboard" setActiveMenu={() => {}} />
+      </div>
+
+      <div className="ml-64">
+        <header className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <h1 className="text-xl font-semibold text-gray-900">Admin / Data</h1>
+              <div className="flex items-center space-x-4">
+                <button className="text-gray-500 hover:text-gray-700"><Bell className="w-5 h-5" /></button>
+                <button className="text-gray-500 hover:text-gray-700"><Settings className="w-5 h-5" /></button>
+                <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+                  <User className="w-5 h-5" /><span>Sign in</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Status Ruangan</h2>
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruangan</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jadwal</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {tableData.map((row) => (
+                      <tr key={row.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                              <User className="w-5 h-5 text-gray-600" />
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900">{row.name}</div>
+                              <div className="text-sm text-gray-500">{row.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{row.ruangan}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{row.jadwal}</td>
+                        <td className="px-6 py-4"><span className={getStatusBadge(row.status)}>{row.status}</span></td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{row.tanggal}</td>
+                        <td className="px-6 py-4">
+                          <button onClick={() => handleEdit(row.id)} className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors">
+                            <Edit size={16} />Edit
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Form Ruangan */}
+          <form onSubmit={handleCreateRoom} className="bg-teal-500 rounded-lg p-6 text-white space-y-6 mb-8">
+            <h3 className="text-xl font-bold text-center">TAMBAH RUANGAN</h3>
+            <input type="text" placeholder="Nama Ruangan" value={newRoom.nama_ruangan} onChange={(e) => setNewRoom({ ...newRoom, nama_ruangan: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
+            <input type="number" placeholder="Kapasitas" value={newRoom.kapasitas} onChange={(e) => setNewRoom({ ...newRoom, kapasitas: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
+            <input type="text" placeholder="Fasilitas" value={newRoom.fasilitas} onChange={(e) => setNewRoom({ ...newRoom, fasilitas: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
+            <input type="text" placeholder="Lokasi Ruangan" value={newRoom.lokasi_ruangan} onChange={(e) => setNewRoom({ ...newRoom, lokasi_ruangan: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
+            <div className="flex justify-center">
+              <button type="submit" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg">Submit</button>
+            </div>
+          </form>
+
+          {/* Form User */}
+          <form onSubmit={handleCreateUser} className="bg-gray-200 rounded-lg p-6 shadow space-y-6">
+            <h3 className="text-xl font-bold text-center text-gray-900">Tambah Pengguna</h3>
+            <input type="text" placeholder="Nama" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            <input type="email" placeholder="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            <input type="password" placeholder="Password" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+            <select
+            value={newUser.role}
+            onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700"
+            >
+            <option value="">Pilih Role</option>
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+            </select>
+            <div className="flex justify-center">
+              <button type="submit" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg">Submit</button>
+            </div>
+          </form>
+        </main>
+      </div>
+
+      {/* Notifikasi */}
+      {message.pesan && (
+        <div className={`border ${message.tipe === 'success' ? 'bg-green-200 border-green-300' : 'bg-red-200 border-red-300'} px-8 py-4 rounded-lg text-sm absolute right-4 bottom-8 shadow-lg text-blue-950`}>
+          <p className="flex justify-center">{message.pesan}</p>
         </div>
-
-        {/* Main Content Container with left margin */}
-        <div className="ml-64">
-            {/* Header */}
-            <header className="bg-white shadow-sm border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-16">
-                        <div className="flex items-center">
-                            <h1 className="text-xl font-semibold text-gray-900">Admin / Data</h1>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                                <input
-                                type="text"
-                                placeholder="Type here..."
-                                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            <button className="text-gray-500 hover:text-gray-700">
-                                <Bell className="w-5 h-5" />
-                            </button>
-                            <button className="text-gray-500 hover:text-gray-700">
-                                <Settings className="w-5 h-5" />
-                            </button>
-                            <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-                                <User className="w-5 h-5" />
-                                <span>Sign in</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Status Ruangan Header */}
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Status Ruangan</h2>
-                    
-                    {/* Data Table */}
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
-                        <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ruangan</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jadwal</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                            {tableData.map((row) => (
-                                <tr key={row.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                    <div className="flex-shrink-0 h-10 w-10">
-                                        <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                        <User className="w-5 h-5 text-gray-600" />
-                                        </div>
-                                    </div>
-                                    <div className="ml-4">
-                                        <div className="text-sm font-medium text-gray-900">{row.name}</div>
-                                        <div className="text-sm text-gray-500">{row.email}</div>
-                                    </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.ruangan}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.jadwal}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={getStatusBadge(row.status)}>{row.status}</span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{row.tanggal}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-900 cursor-pointer">
-                                    <button 
-                                    onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    handleEdit(row.id);
-                                    }}
-                                    className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
-                                    >
-                                    <Edit size={16} />
-                                    Edit
-                                </button>
-                                </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Side by Side Forms Container */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Add Room Form */}
-                    <div className="bg-teal-500 rounded-lg p-6 text-white">
-                        <h3 className="text-xl font-bold mb-6 text-center">TAMBAH RUANGAN</h3>
-                        <div className="space-y-4">
-                            <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Nama Ruangan</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-white bg-transparent rounded-lg focus:ring-2 focus:ring-white focus:border-transparent placeholder-gray-200"
-                                placeholder="Masukkan nama ruangan"
-                                value={newRoom.nama}
-                                onChange={(e) => setNewRoom({...newRoom, nama: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Kapasitas</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-white bg-transparent rounded-lg focus:ring-2 focus:ring-white focus:border-transparent placeholder-gray-200"
-                                placeholder="Contoh: 30 orang"
-                                value={newRoom.kapasitas}
-                                onChange={(e) => setNewRoom({...newRoom, kapasitas: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Fasilitas</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-white bg-transparent rounded-lg focus:ring-2 focus:ring-white focus:border-transparent placeholder-gray-200"
-                                placeholder="Contoh: AC, Proyektor"
-                                value={newRoom.fasilitas}
-                                onChange={(e) => setNewRoom({...newRoom, fasilitas: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-2">Lokasi Ruangan</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-white bg-transparent rounded-lg focus:ring-2 focus:ring-white focus:border-transparent placeholder-gray-200"
-                                placeholder="Contoh: Lantai 2"
-                                value={newRoom.lokasi}
-                                onChange={(e) => setNewRoom({...newRoom, lokasi: e.target.value})}
-                                />
-                            </div>
-                            </div>
-                            <div className="flex justify-center">
-                            <button
-                                onClick={handleRoomSubmit}
-                                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg transition duration-200"
-                            >
-                                Submit
-                            </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Add User Form */}
-                    <div className="bg-gray-200 rounded-lg p-6 shadow">
-                        <h3 className="text-xl font-bold mb-6 text-center text-gray-900">Tambah Pengguna</h3>
-                        <div className="space-y-4">
-                            <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Nama</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Masukkan nama pengguna"
-                                value={newUser.nama}
-                                onChange={(e) => setNewUser({...newUser, nama: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                                <input
-                                type="password"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Masukkan password pengguna"
-                                value={newUser.password}
-                                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                <input
-                                type="email"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Masukkan email pengguna"
-                                value={newUser.email}
-                                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                                <input
-                                type="text"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="Contoh: Admin, User"
-                                value={newUser.role}
-                                onChange={(e) => setNewUser({...newUser, role: e.target.value})}
-                                />
-                            </div>
-                            </div>
-                            <div className="flex justify-center">
-                            <button
-                                onClick={handleUserSubmit}
-                                className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg transition duration-200"
-                            >
-                                Submit
-                            </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
+      )}
     </div>
   );
 };

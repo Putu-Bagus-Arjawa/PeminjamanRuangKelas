@@ -9,7 +9,7 @@ roomRoutes.post("/create", async (req, res) => {
 
   if (!nama_ruangan || !kapasitas || !fasilitas || !lokasi_ruangan) {
     return res.status(400).json({
-      message: 'Semua field (nama_ruangan, kapasitas, fasilitas, lokasi_ruangan) harus diisi.',
+      message: 'Semua field harus diisi.',
     });
   }
 
