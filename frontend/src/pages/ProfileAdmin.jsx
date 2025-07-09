@@ -50,10 +50,16 @@ const ProfileAdminPage = () => {
                 <p className="text-sm font-medium text-gray-600">Email</p>
                 <p className="text-gray-800">{user.email}</p>
               </div>
+                <p className="text-sm font-medium text-gray-600">ID</p>
+                <p className="text-gray-800">{user.nim}</p>
+              </div>
               <div>
                 <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{user.id}</p>
+                <p className="text-gray-800">{user.telepon}</p>
               </div>
+               <div>
+                <p className="text-sm font-medium text-gray-600">ID</p>
+                <p className="text-gray-800">{user.programStudi}</p>
             </div>
           </div>
         </div>

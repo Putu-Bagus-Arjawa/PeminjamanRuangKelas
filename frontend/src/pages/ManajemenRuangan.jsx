@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Search, User, Bell, Settings, Edit } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 import Header from '../components/Header.jsx';
 import { useRoomContext } from '../Context/RoomContext.jsx';
 import Loading from '../components/Loading.jsx';
+import { useUserContext } from '../Context/UserContext.jsx';
 
 const ManajemenRuangan = () => {
     const [activeMenu, setActiveMenu] = useState('Manajemen Ruangan');
     const navigate = useNavigate();
     const {room, loading} = useRoomContext()
+    const {user, loading:userLoad} = useUserContext()
 
     if (loading) return <Loading/>
+    if(userLoad) return <Loading/>
   
 
   const handleEdit = (roomId) => {
@@ -32,7 +35,7 @@ const ManajemenRuangan = () => {
         {/* Header */}
         <Header 
           breadcrumbPath="Admin / Ruangan"
-          userName="A"
+          userName={user.name}
           showSearchBar={true}
           searchPlaceholder="Cari ruangan..."
           onSearchChange={(e) => console.log(e.target.value)}

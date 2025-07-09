@@ -20,6 +20,9 @@ model User {
   email        String        @unique
   password     String
   role         String        @default("USER")
+  nim          String?
+  telepon      String?
+  programStudi String?
 
   peminjaman   Peminjaman[]  @relation("UserPeminjam")
   persetujuan  Persetujuan[] @relation("UserAdmin")
@@ -44,6 +47,7 @@ model Peminjaman {
   status         String     @default("PENDING")
   agenda         String
   deskripsi      String?
+  surat_permohonan String?
 
   id_user        Int
   id_ruangan     Int
@@ -70,6 +74,5 @@ model Notifikasi {
   pesan           String
   tanggal_kirim   DateTime   @default(now())
   id_user         Int
-
   user            User       @relation(fields: [id_user], references: [id])
 }

@@ -20,7 +20,6 @@ const ProfilePage = () => {
         <Sidebar activeMenu="Profile" setActiveMenu={() => {}} />
       </div>
 
-      {/* Main Content */}
       <div className="ml-64 p-6">
         <div className="mb-6">
           <div className="flex items-center text-sm text-gray-500 mb-2">
@@ -31,8 +30,7 @@ const ProfilePage = () => {
           <h1 className="text-2xl font-bold text-gray-800">Profile</h1>
         </div>
 
-        {/* Centered Profile Card */}
-        <div className="flex justify-center">
+      <div className="flex justify-center">
           <div className="w-full max-w-xl bg-white rounded-lg shadow-sm p-6">
             <div className="text-center">
               <div className="relative inline-block">
@@ -51,7 +49,15 @@ const ProfilePage = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{user.id}</p>
+                <p className="text-gray-800">{user.nim}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">ID</p>
+                <p className="text-gray-800">{user.telepon}</p>
+              </div>
+               <div>
+                <p className="text-sm font-medium text-gray-600">ID</p>
+                <p className="text-gray-800">{user.programStudi}</p>
               </div>
             </div>
           </div>

@@ -3,13 +3,17 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { useRoomContext } from '../Context/RoomContext';
 import Loading from '../components/Loading';
+import { useUserContext } from '../Context/UserContext';
 
 
 export default function RoomListingUI() {
   const [activeMenu, setActiveMenu] = useState('List Ruangan');
+  const {user, loading:userLoad} = useUserContext()
   const { room, loading } = useRoomContext();
 
-  if (loading) return <Loading />;
+  if (loading ) return <Loading />;
+  if(userLoad) return <Loading/>
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -18,9 +22,9 @@ export default function RoomListingUI() {
       <div className="flex-1 p-8">
         <Header 
           breadcrumbPath="Pages / List Ruangan"
-          userName="A"
-          showSearchBar={true}
-          searchPlaceholder="Type here"
+          userName={user.name}
+          showSearchBar={false}
+          searchPlaceholder=""
           onSearchChange={(e) => console.log(e.target.value)}
         />
 
