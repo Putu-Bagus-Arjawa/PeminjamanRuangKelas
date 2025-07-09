@@ -7,42 +7,43 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const Dashboard = () => {
-  const {user, loading} = useUserContext()
+  const { user, loading } = useUserContext();
   const [ruangan, setRuangan] = useState([]);
-  const [load, setLoad] = useState(true);  
+  const [riwayat, setRiwayat] = useState([]);
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
-    const fetchRuangan = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/room/roomdisplay");
-        if (!response.ok) throw new Error("Gagal fetch data ruangan");
+        const [ruanganRes, riwayatRes] = await Promise.all([
+          fetch("http://localhost:5000/room/roomdisplay", {
+            credentials: 'include'
+          }),
+          fetch("http://localhost:5000/riwayat?page=1&limit=5", {
+            credentials: 'include'
+          })
+        ]);
 
-        const data = await response.json();
-        setRuangan(data);
+        if (!ruanganRes.ok || !riwayatRes.ok) throw new Error("Gagal fetch");
+
+        const ruanganData = await ruanganRes.json();
+        const riwayatData = await riwayatRes.json();
+
+        setRuangan(ruanganData);
+        if (riwayatData.sukses) {
+          setRiwayat(riwayatData.data);
+        }
       } catch (err) {
-        console.error(err)
+        console.error("Gagal ambil data dashboard:", err);
       } finally {
         setLoad(false);
       }
     };
 
-    fetchRuangan();
+    fetchData();
   }, []);
 
-
-  if(loading) return  <Loading/>
-  if (load) return <Loading/>
-
-  const cards = [
-    { title: "Ruangan Tersedia", value: 12, note: "Ruangan tersedia saat ini" },
-    { title: "Total Reservasi Anda", value: 11, note: "Total reservasi anda" },
-    { title: "Reservasi Disetujui", value: 8, note: "Total reservasi disetujui" },
-    { title: "Reservasi Ditolak", value: 0, note: "Total reservasi ditolak" },
-  ];
-
-
-
-
+  if (loading || load) return <Loading />;
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -54,8 +55,8 @@ const Dashboard = () => {
         <Header
           breadcrumbPath="Pages / Dashboard"
           userName={user.name}
-          showSearchBar
-          searchPlaceholder="Type here"
+          showSearchBar={false}
+          searchPlaceholder="Cari..."
           onSearchChange={(e) => console.log(e.target.value)}
         />
 
@@ -64,22 +65,16 @@ const Dashboard = () => {
           <p className="mt-2">Ayo mulai reservasi ruangan dengan mudah dan nyaman</p>
         </div>
 
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          {cards.map((card, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-gray-500 text-sm">{card.title}</h3>
-              <p className="text-3xl font-bold text-gray-800">{card.value}</p>
-              <p className="text-xs text-gray-400 mt-1">{card.note}</p>
-            </div>
-          ))}
-        </div>
-
+        {/* Ruangan Section */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Peminjaman Ruangan</h2>
           <div className="grid grid-cols-4 gap-6">
             {ruangan.map((room) => (
               <div key={room.id} className="bg-white rounded-lg shadow overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop" alt="" />
+                <img
+                  src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop"
+                  alt="Ruangan"
+                />
                 <div className="p-4">
                   <h3 className="font-semibold">{room.nama_ruangan}</h3>
                   <p className="text-sm text-gray-500">{room.fasilitas}</p>
@@ -99,7 +94,9 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <ReservationTable />
+
+        {/* Riwayat Table */}
+        <ReservationTable data={riwayat} />
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ const ManajemenRuangan = () => {
         <Header 
           breadcrumbPath="Admin / Ruangan"
           userName={user.name}
-          showSearchBar={true}
+          showSearchBar={false}
           searchPlaceholder="Cari ruangan..."
           onSearchChange={(e) => console.log(e.target.value)}
         />

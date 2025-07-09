@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import { Router } from 'express';
+import { authenticate } from '../Middleware/Authenticate.js';
+import otorisasiAdmin from '../Middleware/RolePermission.js';
 
 const prisma = new PrismaClient();
 const roomRoutes = Router();
 
-roomRoutes.post("/create", async (req, res) => {
+roomRoutes.post("/create",authenticate, async (req, res) => {
   const { nama_ruangan, kapasitas, fasilitas, lokasi_ruangan } = req.body;
 
   if (!nama_ruangan || !kapasitas || !fasilitas || !lokasi_ruangan) {
@@ -42,7 +44,7 @@ roomRoutes.post("/create", async (req, res) => {
   }
 });
 
-roomRoutes.get("/", async (req, res) => {
+roomRoutes.get("/", authenticate, async (req, res) => {
   try {
     const ruangan = await prisma.ruangan.findMany();
     res.status(200).json(ruangan);
@@ -52,7 +54,7 @@ roomRoutes.get("/", async (req, res) => {
   }
 });
 
-roomRoutes.get('/roomdisplay', async (req, res) => {
+roomRoutes.get('/roomdisplay', authenticate, async (req, res) => {
   try {
     const ruangan = await prisma.ruangan.findMany({
       take: 3
@@ -60,6 +62,51 @@ roomRoutes.get('/roomdisplay', async (req, res) => {
     res.json(ruangan);
   } catch (error) {
     res.status(500).json({ error: 'Gagal mengambil data ruangan' });
+  }
+});
+
+roomRoutes.put('/edit/:id', authenticate, otorisasiAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { name, capacity, location, facilities } = req.body;
+
+  if (!name || !capacity || !location) {
+    return res.status(400).json({ sukses: false, message: 'Semua field wajib diisi' });
+  }
+
+  try {
+    const updatedRoom = await prisma.ruangan.update({
+      where: { id: parseInt(id) },
+      data: {
+        nama_ruangan: name,
+        kapasitas: parseInt(capacity),
+        lokasi_ruangan: location,
+        fasilitas: Array.isArray(facilities) ? facilities.join(', ') : facilities
+      },
+    });
+
+    res.json({ sukses: true, data: updatedRoom });
+  } catch (error) {
+    console.error('🔥 Error update ruangan:', error);
+    res.status(500).json({ sukses: false, message: 'Gagal update ruangan' });
+  }
+});
+
+roomRoutes.get('/display/:id', authenticate, otorisasiAdmin, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const ruangan = await prisma.ruangan.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!ruangan) {
+      return res.status(404).json({ sukses: false, message: 'Ruangan tidak ditemukan' });
+    }
+
+    res.json({ sukses: true, data: ruangan });
+  } catch (error) {
+    console.error('🔥 Error get ruangan:', error);
+    res.status(500).json({ sukses: false, message: 'Gagal mengambil data ruangan' });
   }
 });
 

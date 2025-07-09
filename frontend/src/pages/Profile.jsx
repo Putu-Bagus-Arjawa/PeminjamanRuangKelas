@@ -3,11 +3,9 @@ import Sidebar from '../components/Sidebar.jsx';
 import { useUserContext } from '../Context/UserContext.jsx';
 
 const ProfilePage = () => {
+  const { user, loading } = useUserContext();
 
-
-  const {user, loading} = useUserContext()
-
-  if (loading) return <Loading/>
+  if (loading) return <Loading />;
 
   const getInitials = (name) => {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2);
@@ -30,7 +28,7 @@ const ProfilePage = () => {
           <h1 className="text-2xl font-bold text-gray-800">Profile</h1>
         </div>
 
-      <div className="flex justify-center">
+        <div className="flex justify-center">
           <div className="w-full max-w-xl bg-white rounded-lg shadow-sm p-6">
             <div className="text-center">
               <div className="relative inline-block">
@@ -42,24 +40,27 @@ const ProfilePage = () => {
               <p className="text-gray-600 mb-2">{user.role}</p>
             </div>
 
-            <div className="mt-6 pt-6 border-t space-y-4">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Email</p>
-                <p className="text-gray-800">{user.email}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{user.nim}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{user.telepon}</p>
-              </div>
-               <div>
-                <p className="text-sm font-medium text-gray-600">ID</p>
-                <p className="text-gray-800">{user.programStudi}</p>
+            <div className="mt-6 pt-6 border-t">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-gray-50 rounded-lg shadow-sm border">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1 tracking-wide">Email</p>
+                  <p className="text-gray-800 break-words">{user.email}</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg shadow-sm border">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1 tracking-wide">NIM</p>
+                  <p className="text-gray-800 break-words">{user.nim}</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg shadow-sm border">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1 tracking-wide">Telepon</p>
+                  <p className="text-gray-800 break-words">{user.telepon}</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg shadow-sm border">
+                  <p className="text-xs font-semibold text-gray-500 uppercase mb-1 tracking-wide">Program Studi</p>
+                  <p className="text-gray-800 break-words">{user.programStudi}</p>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>

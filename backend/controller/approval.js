@@ -6,8 +6,6 @@ import otorisasiAdmin from "../Middleware/RolePermission.js";
 const prisma = new PrismaClient();
 const approveRoutes = Router();
 
-
-// GET satu data peminjaman berdasarkan ID
 approveRoutes.get("/:id", authenticate, otorisasiAdmin, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
