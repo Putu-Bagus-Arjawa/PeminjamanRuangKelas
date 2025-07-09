@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import Register from './pages/Register.jsx'
 import Login from './pages/Login.jsx'
 import ListRuangan from './pages/ListRuangan.jsx'
 import App from './App.jsx'
@@ -29,7 +28,7 @@ const routes = createBrowserRouter([
     children: [
       { index: true, element: <Dashboard /> },
       { path: '/listruangan', element: <ListRuangan /> },
-      { path: '/riwayat', element: <Riwayat /> },
+      { path: '/riwayat', element: <Riwayat/> },
       { path: '/profile', element: <Profile /> },
       { path: '/admin', element: <DashboardAdmin /> },
       { path: '/booking', element: <BookingForm /> },
@@ -44,10 +43,6 @@ const routes = createBrowserRouter([
   {
     path: '/login',
     element: <Login />
-  },
-  {
-    path: '/register',
-    element: <Register />
   },
   {
     path: '*',

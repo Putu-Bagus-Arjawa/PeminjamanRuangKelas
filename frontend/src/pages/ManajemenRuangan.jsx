@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Edit } from 'lucide-react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
@@ -28,11 +28,9 @@ const ManajemenRuangan = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar Component */}
       <SidebarAdmin activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
 
       <div className="flex-1 p-8 bg-gray-50 min-h-screen">
-        {/* Header */}
         <Header 
           breadcrumbPath="Admin / Ruangan"
           userName={user.name}
@@ -41,7 +39,6 @@ const ManajemenRuangan = () => {
           onSearchChange={(e) => console.log(e.target.value)}
         />
 
-        {/* Table */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">

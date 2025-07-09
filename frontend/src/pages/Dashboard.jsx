@@ -65,7 +65,6 @@ const Dashboard = () => {
           <p className="mt-2">Ayo mulai reservasi ruangan dengan mudah dan nyaman</p>
         </div>
 
-        {/* Ruangan Section */}
         <div className="mb-8">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Peminjaman Ruangan</h2>
           <div className="grid grid-cols-4 gap-6">
@@ -95,7 +94,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Riwayat Table */}
         <ReservationTable data={riwayat} />
       </div>
     </div>

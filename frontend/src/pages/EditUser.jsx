@@ -1,45 +1,59 @@
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router"
 import { useEffect, useState } from "react"
 import SidebarAdmin from "../components/SidebarAdmin"
 
 const EditUser = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [user, setUser] = useState({ name: "", email: "", role: "USER" })
+  const [loading, setLoading] = useState(true)
 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    role: "user"
-  })
+console.log("ID dari useParams():", id)
 
-  useEffect(() => {
-    // Simulasi fetch data user berdasarkan ID (dummy)
-    const dummyUsers = [
-      { id: 1, name: "Ahmad Rizki", email: "ahmad.rizki@email.com", role: "admin" },
-      { id: 2, name: "Siti Nurhaliza", email: "siti.nurhaliza@email.com", role: "user" },
-      { id: 3, name: "Budi Santoso", email: "budi.santoso@email.com", role: "user" },
-      { id: 4, name: "Maya Sari", email: "maya.sari@email.com", role: "moderator" },
-      { id: 5, name: "Dedi Kurniawan", email: "dedi.kurniawan@email.com", role: "user" }
-    ]
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/user/${id}`, {
+        credentials: "include",
+      })
+      const data = await res.json()
+      setUser(data)
+    } catch (err) {
+      console.error("Error:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-    const selectedUser = dummyUsers.find(u => u.id === parseInt(id))
-    if (selectedUser) setUser(selectedUser)
-  }, [id])
+  fetchUser() 
+}, [id])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setUser(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Simulasi update user
-    console.log("Data user setelah diedit:", user)
-    alert("Data pengguna berhasil diperbarui!")
+    try {
+      const res = await fetch(`http://localhost:5000/user/edit/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(user)
+      })
 
-    // Redirect ke halaman manajemen pengguna
-    navigate("/manajemenpengguna")
+      if (!res.ok) throw new Error("Gagal update user.")
+      alert("User berhasil diperbarui!")
+      navigate("/manajemenpengguna")
+    } catch (err) {
+      console.error("Update error:", err)
+      alert("Gagal memperbarui user.")
+    }
   }
+
+  if (loading) return <p className="p-8 text-center">Loading...</p>
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -78,8 +92,9 @@ const EditUser = () => {
                 onChange={handleChange}
                 className="mt-1 p-2 w-full border rounded"
               >
-                <option value="admin">User</option>
-                <option value="user">Admin</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+                <option value="moderator">Moderator</option>
               </select>
             </div>
             <div className="pt-4 flex justify-end space-x-2">
@@ -89,13 +104,12 @@ const EditUser = () => {
               >
                 Simpan Perubahan
               </button>
-              <button
-                type="button"
-                onClick={() => navigate("/manajemenpengguna")}
+              <Link
+                to={"/manajemenpengguna"}
                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
               >
                 Batal
-              </button>
+              </Link>
             </div>
           </form>
         </div>

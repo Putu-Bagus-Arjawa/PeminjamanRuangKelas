@@ -1,4 +1,3 @@
-import React from 'react';
 import SidebarAdmin from '../components/SidebarAdmin.jsx';
 import { useUserContext } from '../Context/UserContext.jsx';
 import Loading from '../components/Loading.jsx';
@@ -14,12 +13,10 @@ const ProfileAdminPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
       <div className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg z-10">
         <SidebarAdmin activeMenu="Profile" setActiveMenu={() => {}} />
       </div>
 
-      {/* Main Content */}
       <div className="ml-64 p-6">
         <div className="mb-6">
           <div className="flex items-center text-sm text-gray-500 mb-2">

@@ -47,9 +47,9 @@ export default function RoomListingUI() {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{roomItem.nama_ruangan}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{roomItem.kapasitas}</p>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">Kapasitas:{roomItem.kapasitas}</p>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Capacity: {roomItem.fasilitas}</span>
+                      <span className="text-gray-500">Fasilitas: {roomItem.fasilitas}</span>
                       <span 
                         className={`font-medium ${
                           roomItem.availability === 'Available' 

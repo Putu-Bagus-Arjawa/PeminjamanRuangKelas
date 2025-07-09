@@ -70,7 +70,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-  console.log("Data dari backend:", data); // Tambahkan ini
+  console.log("Data dari backend:", data); 
 }, [data]);
 
   const handleCreateRoom = async (e) => {
@@ -223,7 +223,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Form Tambah Ruangan */}
           <form onSubmit={handleCreateRoom} className="bg-teal-500 rounded-lg p-6 text-white space-y-6 mb-8">
             <h3 className="text-xl font-bold text-center">TAMBAH RUANGAN</h3>
             <input type="text" placeholder="Nama Ruangan" value={newRoom.nama_ruangan} onChange={(e) => setNewRoom({ ...newRoom, nama_ruangan: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
@@ -235,7 +234,6 @@ const Dashboard = () => {
             </div>
           </form>
 
-          {/* Form Tambah Pengguna */}
           <form onSubmit={handleCreateUser} className="bg-gray-200 rounded-lg p-6 shadow space-y-6">
             <h3 className="text-xl font-bold text-center text-gray-900">Tambah Pengguna</h3>
             <input type="text" placeholder="Nama" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
@@ -253,7 +251,6 @@ const Dashboard = () => {
         </main>
       </div>
 
-      {/* Notifikasi */}
       {message.pesan && (
         <div className={`border ${message.tipe === 'success' ? 'bg-green-200 border-green-300' : 'bg-red-200 border-red-300'} px-8 py-4 rounded-lg text-sm absolute right-4 bottom-8 shadow-lg text-blue-950`}>
           <p className="flex justify-center">{message.pesan}</p>

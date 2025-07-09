@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import SidebarAdmin from "../components/SidebarAdmin.jsx"
+import Loading from "../components/Loading.jsx"
 
 const ManajemenPengguna = () => {
   const [users, setUsers] = useState([])
+  const [load, setLoad] = useState(true)
 
   useEffect(() => {
-    // Data dummy untuk demo (bisa diganti dengan fetch API)
-    const dummyUsers = [
-      { id: 1, name: "Ahmad Rizki", email: "ahmad.rizki@email.com", role: "admin" },
-      { id: 2, name: "Siti Nurhaliza", email: "siti.nurhaliza@email.com", role: "user" },
-      { id: 3, name: "Budi Santoso", email: "budi.santoso@email.com", role: "user" },
-      { id: 4, name: "Maya Sari", email: "maya.sari@email.com", role: "moderator" },
-      { id: 5, name: "Dedi Kurniawan", email: "dedi.kurniawan@email.com", role: "user" },
-    ]
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/user/all", {
+          credentials: "include",
+        })
+        if (!res.ok) throw new Error("Gagal fetch user")
+        const data = await res.json()
+        setUsers(data)
+      } catch (err) {
+        console.error("Gagal fetch user:", err)
+        setUsers([])
+      } finally {
+        setLoad(false)
+      }
+    }
 
-    setUsers(dummyUsers)
-
-    // Ganti dengan backend fetch jika backend sudah tersedia:
-    // fetch("http://localhost:5000/api/users")
-    //   .then(res => res.json())
-    //   .then(data => setUsers(data))
-    //   .catch(err => console.error("Gagal fetch data user:", err))
+    fetchUsers()
   }, [])
 
   const getRoleColor = (role) => {
@@ -32,6 +35,8 @@ const ManajemenPengguna = () => {
     }
     return colors[role] || "bg-gray-100 text-gray-800"
   }
+
+  if (load) return <Loading />
 
   return (
     <div className="flex min-h-screen bg-gray-50">

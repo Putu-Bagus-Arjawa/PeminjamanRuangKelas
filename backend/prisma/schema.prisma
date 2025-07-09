@@ -25,8 +25,6 @@ model User {
   programStudi String?
 
   peminjaman   Peminjaman[]  @relation("UserPeminjam")
-  persetujuan  Persetujuan[] @relation("UserAdmin")
-  notifikasi   Notifikasi[]
 }
 
 model Ruangan {
@@ -54,25 +52,6 @@ model Peminjaman {
 
   user           User       @relation("UserPeminjam", fields: [id_user], references: [id])
   ruangan        Ruangan    @relation(fields: [id_ruangan], references: [id])
-  persetujuan    Persetujuan[]
 }
 
-model Persetujuan {
-  id               Int        @id @default(autoincrement())
-  keputusan        String
-  tanggal          DateTime   @default(now())
 
-  id_peminjaman    Int
-  id_user          Int
-
-  peminjaman       Peminjaman @relation(fields: [id_peminjaman], references: [id])
-  user             User       @relation("UserAdmin", fields: [id_user], references: [id])
-}
-
-model Notifikasi {
-  id              Int        @id @default(autoincrement())
-  pesan           String
-  tanggal_kirim   DateTime   @default(now())
-  id_user         Int
-  user            User       @relation(fields: [id_user], references: [id])
-}

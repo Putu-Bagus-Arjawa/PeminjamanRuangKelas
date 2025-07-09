@@ -13,7 +13,6 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar */}
       <div className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg z-10">
         <Sidebar activeMenu="Profile" setActiveMenu={() => {}} />
       </div>
