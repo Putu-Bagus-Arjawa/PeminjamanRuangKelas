@@ -8,6 +8,12 @@ import roomRoutes from "./controller/roomController.js";
 import bookingRoutes from "./controller/booking.js";
 import riwayatRoutes from "./controller/riwayat.js";
 import approveRoutes from "./controller/approval.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 
@@ -30,6 +36,9 @@ app.use("/riwayat", riwayatRoutes)
 app.use("/approve", approveRoutes)
 
 app.use(userRoutes)
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.listen(PORT, ()=> console.log(`server succesfully run at port ${PORT}`))
 

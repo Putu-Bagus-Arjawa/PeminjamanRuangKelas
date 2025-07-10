@@ -75,8 +75,10 @@ riwayatRoutes.get('/admin', authenticate, otorisasiAdmin, async (req, res) => {
       room: item.ruangan.nama_ruangan,
       agenda: `${item.agenda} ${item.deskripsi ?? ""}`.trim(),
       status: item.status === "DISETUJUI" ? "Disetujui" : item.status === "DITOLAK" ? "Ditolak" : "Pending",
-      date: new Date(item.tanggal).toLocaleDateString("id-ID")
-    }))
+      date: new Date(item.tanggal).toLocaleDateString("id-ID"),
+      suratUrl: item.surat_permohonan || null
+
+    }));
 
     res.json({
       sukses: true,

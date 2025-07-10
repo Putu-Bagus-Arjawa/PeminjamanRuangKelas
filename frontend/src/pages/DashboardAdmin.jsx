@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [message, setMessage] = useState({ pesan: '', tipe: '' });
 
   const [newRoom, setNewRoom] = useState({
     nama_ruangan: '',
@@ -25,7 +26,14 @@ const Dashboard = () => {
     role: ''
   });
 
-  const [message, setMessage] = useState({ pesan: '', tipe: '' });
+  useEffect(() => {
+    fetchRiwayat(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [page]);
+
+  useEffect(() => {
+    console.log("Data dari backend:", data);
+  }, [data]);
 
   const fetchRiwayat = async (pageNow = 1) => {
     setLoading(true);
@@ -46,32 +54,17 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    fetchRiwayat(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [page]);
-
   const getStatusBadge = (status) => {
-    const baseClasses = 'px-3 py-1 rounded-full text-sm font-medium';
-    switch (status) {
-      case 'Disetujui':
-        return `${baseClasses} bg-green-100 text-green-800`;
-      case 'Pending':
-        return `${baseClasses} bg-yellow-100 text-yellow-800`;
-      case 'Ditolak':
-        return `${baseClasses} bg-red-100 text-red-800`;
-      default:
-        return `${baseClasses} bg-gray-100 text-gray-800`;
-    }
+    const base = 'px-3 py-1 rounded-full text-sm font-medium';
+    if (status === 'Disetujui') return `${base} bg-green-100 text-green-800`;
+    if (status === 'Pending') return `${base} bg-yellow-100 text-yellow-800`;
+    if (status === 'Ditolak') return `${base} bg-red-100 text-red-800`;
+    return `${base} bg-gray-100 text-gray-800`;
   };
 
   const handleEdit = (rowId) => {
     navigate(`/approve/${rowId}`);
   };
-
-  useEffect(() => {
-  console.log("Data dari backend:", data); 
-}, [data]);
 
   const handleCreateRoom = async (e) => {
     e.preventDefault();
@@ -115,16 +108,17 @@ const Dashboard = () => {
     }
   };
 
-  const getInitials = (name) => {
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-  };
+  const getInitials = (name) =>
+    name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Sidebar */}
       <div className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg z-10">
         <SidebarAdmin activeMenu="Dashboard" setActiveMenu={() => {}} />
       </div>
 
+      {/* Main content */}
       <div className="ml-64">
         <header className="bg-white shadow-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,7 +129,8 @@ const Dashboard = () => {
         </header>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-8">
+          {/* Status Ruangan Table */}
+          <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Status Ruangan</h2>
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="overflow-x-auto">
@@ -147,14 +142,15 @@ const Dashboard = () => {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jadwal</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Document</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {loading ? (
-                      <tr><td colSpan={6} className="text-center p-4">Loading...</td></tr>
+                      <tr><td colSpan={7} className="text-center p-4">Loading...</td></tr>
                     ) : data.length === 0 ? (
-                      <tr><td colSpan={6} className="text-center p-4">Tidak ada data</td></tr>
+                      <tr><td colSpan={7} className="text-center p-4">Tidak ada data</td></tr>
                     ) : data.map((row) => (
                       <tr key={row.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -173,10 +169,39 @@ const Dashboard = () => {
                           <div className="font-medium">{row.agenda.split(' ')[0]}</div>
                           <div className="text-sm text-gray-500">{row.agenda.split(' ').slice(1).join(' ')}</div>
                         </td>
-                        <td className="px-6 py-4"><span className={getStatusBadge(row.status)}>{row.status}</span></td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{row.date}</td>
                         <td className="px-6 py-4">
-                          <button onClick={() => handleEdit(row.id)} className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors">
+                          <span className={getStatusBadge(row.status)}>{row.status}</span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{row.date}</td>
+                        <td className="px-6 py-4 text-sm text-blue-600">
+                          {row.suratUrl ? (
+                            <>
+                              <a
+                                href={`http://localhost:5000${row.suratUrl}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline mr-2"
+                              >
+                                Lihat
+                              </a>
+                              <a
+                                href={`http://localhost:5000${row.suratUrl}`}
+                                download
+                                className="underline text-green-600"
+                              >
+                                Unduh
+                              </a>
+                            </>
+                          ) : (
+                            <span className="text-gray-400 italic">Tidak ada</span>
+                          )}
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => handleEdit(row.id)}
+                            className="flex items-center gap-2 px-3 py-1 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+                          >
                             <Edit size={16} />Edit
                           </button>
                         </td>
@@ -186,7 +211,6 @@ const Dashboard = () => {
                 </table>
               </div>
 
-              {/* Pagination */}
               <div className="flex justify-between items-center px-4 py-3 bg-gray-50">
                 <button
                   disabled={page === 1}
@@ -195,7 +219,6 @@ const Dashboard = () => {
                 >
                   ← Sebelumnya
                 </button>
-
                 <div className="flex items-center space-x-2">
                   {Array.from({ length: totalPages }, (_, i) => (
                     <button
@@ -211,7 +234,6 @@ const Dashboard = () => {
                     </button>
                   ))}
                 </div>
-
                 <button
                   disabled={page === totalPages}
                   onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
@@ -221,13 +243,28 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
-          </div>
-
+          </section>
           <form onSubmit={handleCreateRoom} className="bg-teal-500 rounded-lg p-6 text-white space-y-6 mb-8">
             <h3 className="text-xl font-bold text-center">TAMBAH RUANGAN</h3>
-            <input type="text" placeholder="Nama Ruangan" value={newRoom.nama_ruangan} onChange={(e) => setNewRoom({ ...newRoom, nama_ruangan: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
-            <input type="number" placeholder="Kapasitas" value={newRoom.kapasitas} onChange={(e) => setNewRoom({ ...newRoom, kapasitas: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
-            <input type="text" placeholder="Fasilitas" value={newRoom.fasilitas} onChange={(e) => setNewRoom({ ...newRoom, fasilitas: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
+            <input 
+              type="text" 
+              placeholder="Nama Ruangan" 
+              value={newRoom.nama_ruangan} 
+              onChange={(e) => 
+              setNewRoom({ ...newRoom, nama_ruangan: e.target.value })} 
+              className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" 
+            />
+            <input 
+              type="number" 
+              placeholder="Kapasitas" 
+              value={newRoom.kapasitas} 
+              onChange={(e) => setNewRoom({ ...newRoom, kapasitas: parseInt(e.target.value) || 0 })} 
+              className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" 
+            />
+
+            <input 
+              type="text" 
+              placeholder="Fasilitas" value={newRoom.fasilitas} onChange={(e) => setNewRoom({ ...newRoom, fasilitas: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
             <input type="text" placeholder="Lokasi Ruangan" value={newRoom.lokasi_ruangan} onChange={(e) => setNewRoom({ ...newRoom, lokasi_ruangan: e.target.value })} className="w-full px-3 py-2 rounded bg-transparent border border-white placeholder-gray-200" />
             <div className="flex justify-center">
               <button type="submit" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg">Submit</button>
